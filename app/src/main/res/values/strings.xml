@@ -9,4 +9,9 @@
 
     <string name="btnLogin">L O G I N</string>
     <string name="btnBack">B A C K</string>
+
+    <string name="btn_start">Start Ride</string>
+    <string name="btn_end">End Ride</string>
+    <string name="btn_view">View Driver</string>
+
 </resources>
