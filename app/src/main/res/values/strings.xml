@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Commute System</string>
+
+    <string name="btn_Parent">Parent</string>
+    <string name="btn_Driver">Driver</string>
+
+    <string name="txtParent">Login as Parent</string>
+    <string name="txtDriver">Login as Driver</string>
+
+    <string name="btnLogin">L O G I N</string>
+    <string name="btnBack">B A C K</string>
+</resources>
