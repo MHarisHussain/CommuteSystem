@@ -45,7 +45,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:labelText="Password"
-        app:minCharacters="8">
+        app:minCharacters="6">
 
         <com.developer.mtextfield.ExtendedEditText
             android:id="@+id/extended_Password"
