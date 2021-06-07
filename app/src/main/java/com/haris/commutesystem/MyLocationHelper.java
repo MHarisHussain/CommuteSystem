@@ -1,16 +1,16 @@
 package com.haris.commutesystem;
 
-public class MyLocation {
+public class MyLocationHelper {
 
     private double latitude;
     private double longitude;
 
-    public MyLocation(double latitude, double longitude) {
+    public MyLocationHelper(double latitude, double longitude) {
         this.latitude = latitude;
         this.longitude = longitude;
     }
 
-    public MyLocation(){}
+    public MyLocationHelper(){}
 
     public double getLatitude() {
         return latitude;

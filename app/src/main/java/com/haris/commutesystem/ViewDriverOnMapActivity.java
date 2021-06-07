@@ -25,31 +25,31 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-public class DriverLocationActivity extends FragmentActivity implements OnMapReadyCallback, LocationListener {
+public class ViewDriverOnMapActivity extends FragmentActivity implements OnMapReadyCallback, LocationListener {
 
     private GoogleMap mMap;
     private DatabaseReference reference;
     private LocationManager manager;
-    private final int MIN_TIME = 10000; // 1 sec
+    private final int MIN_TIME = 4000; // 1 sec
     private final int MIN_DISTANCE = 1; // 1 meter
     Marker myMarker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_driver_location);
+        setContentView(R.layout.activity_view_driver_on_map);
 
         manager = (LocationManager) getSystemService(LOCATION_SERVICE);
-        reference = FirebaseDatabase.getInstance().getReference().child("User-101");
+
+        //reference = FirebaseDatabase.getInstance().getReference().child("User-101");
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        getLoationUpdates();
-
-        readChanges();
+        getLocationUpdates();
+        //readChanges();
     }
 
     private void readChanges() {
@@ -58,14 +58,13 @@ public class DriverLocationActivity extends FragmentActivity implements OnMapRea
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()){
                     try {
-                        MyLocation location = dataSnapshot.getValue(MyLocation.class);
+                        MyLocationHelper location = dataSnapshot.getValue(MyLocationHelper.class);
                         if(location != null){
-                            myMarker.setPosition(new LatLng(location.getLatitude(), location.getLongitude()));
+
                         }
                     }catch (Exception e){
-                        Toast.makeText(DriverLocationActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ViewDriverOnMapActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
-
                 }
             }
 
@@ -76,20 +75,19 @@ public class DriverLocationActivity extends FragmentActivity implements OnMapRea
         });
     }
 
-    private void getLoationUpdates() {
-
-        if (manager != null) {
+    private void getLocationUpdates() {
+        if(manager != null){
             if(ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
-            ActivityCompat.checkSelfPermission(this,Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED){
-            if(manager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
-                manager.requestLocationUpdates(LocationManager.GPS_PROVIDER, MIN_TIME, MIN_DISTANCE, this);
-            }else if(manager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)){
-                manager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, MIN_TIME, MIN_DISTANCE, this);
+                    ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                if (manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                    manager.requestLocationUpdates(LocationManager.GPS_PROVIDER, MIN_TIME, MIN_DISTANCE, this);
+                } else if (manager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+                    manager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, MIN_TIME, MIN_DISTANCE, this);
+                } else {
+                    Toast.makeText(this, "No Provider Enable", Toast.LENGTH_SHORT).show();
+                }
             }else{
-                Toast.makeText(this, "No GPS Enabled", Toast.LENGTH_SHORT).show();
-            }
-            }else{
-                ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION},101);
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},101);
             }
         }
     }
@@ -100,9 +98,9 @@ public class DriverLocationActivity extends FragmentActivity implements OnMapRea
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if(requestCode == 101){
             if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-                getLoationUpdates();
+                getLocationUpdates();
             }else{
-                Toast.makeText(this, "Permission required", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Premission Required", Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -132,7 +130,7 @@ public class DriverLocationActivity extends FragmentActivity implements OnMapRea
         if(location != null){
             saveLocation(location);
         }else{
-            Toast.makeText(this, "no Location", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "No Location", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -142,13 +140,16 @@ public class DriverLocationActivity extends FragmentActivity implements OnMapRea
 
     @Override
     public void onStatusChanged(String provider, int status, Bundle extras) {
+
     }
 
     @Override
     public void onProviderEnabled(@NonNull String provider) {
+
     }
 
     @Override
     public void onProviderDisabled(@NonNull String provider) {
+
     }
 }

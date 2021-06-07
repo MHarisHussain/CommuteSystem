@@ -6,13 +6,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ParentActivity">
+    tools:context=".DriverLoginActivity">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="24sp"
-        android:text="@string/txtParent"
+        android:text="@string/txtDriver"
         android:layout_gravity="center"
         android:textColor="@color/colorDarkGray"
         android:layout_marginTop="15dp"/>
@@ -61,19 +61,20 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/btnLoginParent"
+            android:id="@+id/btnLoginDriver"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/btnLogin"/>
 
         <Button
-            android:id="@+id/btnBackP"
+            android:id="@+id/btnBackD"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:text="@string/btnBack"/>
 
     </LinearLayout>
+
 
 </LinearLayout>
