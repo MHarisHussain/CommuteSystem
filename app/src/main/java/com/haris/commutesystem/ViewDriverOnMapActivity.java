@@ -30,7 +30,7 @@ public class ViewDriverOnMapActivity extends FragmentActivity implements OnMapRe
     private GoogleMap mMap;
     private DatabaseReference reference;
     private LocationManager manager;
-    private final int MIN_TIME = 4000; // 1 sec
+    private final int MIN_TIME = 1000; // 1 sec
     private final int MIN_DISTANCE = 1; // 1 meter
     Marker myMarker;
 
@@ -41,15 +41,15 @@ public class ViewDriverOnMapActivity extends FragmentActivity implements OnMapRe
 
         manager = (LocationManager) getSystemService(LOCATION_SERVICE);
 
-        //reference = FirebaseDatabase.getInstance().getReference().child("User-101");
+        reference = FirebaseDatabase.getInstance().getReference().child("User-101");
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        getLocationUpdates();
-        //readChanges();
+        //getLocationUpdates();
+        readChanges();
     }
 
     private void readChanges() {
@@ -60,7 +60,7 @@ public class ViewDriverOnMapActivity extends FragmentActivity implements OnMapRe
                     try {
                         MyLocationHelper location = dataSnapshot.getValue(MyLocationHelper.class);
                         if(location != null){
-
+                            myMarker.setPosition(new LatLng(location.getLatitude(), location.getLongitude()));
                         }
                     }catch (Exception e){
                         Toast.makeText(ViewDriverOnMapActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -100,7 +100,7 @@ public class ViewDriverOnMapActivity extends FragmentActivity implements OnMapRe
             if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
                 getLocationUpdates();
             }else{
-                Toast.makeText(this, "Premission Required", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Permission Required", Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -118,11 +118,12 @@ public class ViewDriverOnMapActivity extends FragmentActivity implements OnMapRe
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        LatLng track = new LatLng(-66, 24);
-        myMarker = mMap.addMarker(new MarkerOptions().position(track).title("Marker is on Driver"));
+        LatLng track = new LatLng(24.860300, 67.069715);
+        myMarker = mMap.addMarker(new MarkerOptions().position(track).title("Driver"));
         mMap.getUiSettings().setZoomControlsEnabled(true);
         mMap.getUiSettings().setAllGesturesEnabled(true);
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(track));
+        float zoomLevel = 16.0f; //This goes up to 21
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(track, zoomLevel));
     }
 
     @Override
